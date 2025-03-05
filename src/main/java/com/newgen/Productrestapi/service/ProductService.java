@@ -55,9 +55,23 @@ public class ProductService {
     }
 
 
-    public boolean delete(Product product) {
+    public boolean delete(Long id) {
 
-        return products.remove(product.getId()) != null;
+        return products.remove(id) != null;
+    }
+
+    public boolean updateProduct(Product newProduct) {
+
+        Product oldProduct = products.get(newProduct.getId());
+
+        if(oldProduct!= null) {
+            oldProduct.setName(newProduct.getName());
+            oldProduct.setPrice(newProduct.getPrice());
+            oldProduct.setCategory(newProduct.getCategory());
+            return true;
+
+        }
+        return false;
     }
 
     public List<Product> searchByCategory(Category category) {

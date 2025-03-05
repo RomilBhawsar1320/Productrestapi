@@ -36,5 +36,27 @@ public class ProductController {
         System.out.println("addProduct method called");
         return "product added successfully";
     }
-    
+
+    @DeleteMapping("/api/v1/products/{id}")
+    public String deleteProductbyID(@PathVariable(name = "id") Long productId) {
+        System.out.println("deleteProduct method called");
+        boolean status = productService.delete(productId);
+        if (status) {
+            return "product deleted successfully";
+        } else {
+            return "product not deleted";
+        }
+    }
+
+    @PutMapping("/api/v1/products")
+    public String updateProduct(@RequestBody Product product) {
+        System.out.println("updateProduct method called");
+        boolean status = productService.updateProduct(product);
+
+        if (status) {
+            return "product updated successfully";
+        }
+        return "product not found or not updated";
+
+    }
 }
