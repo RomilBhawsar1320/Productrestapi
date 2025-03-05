@@ -49,6 +49,8 @@ public class ProductService {
     }
     public List<Product> getAll() {
 
+        System.out.println("getAll productService called");
+
         return new ArrayList<>(products.values());
     }
 
