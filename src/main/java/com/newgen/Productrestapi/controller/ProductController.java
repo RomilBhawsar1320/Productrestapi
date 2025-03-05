@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/products")
+@RequestMapping
 public class ProductController {
     private ProductService productService;
     @Autowired
@@ -19,7 +19,7 @@ public class ProductController {
     }
 
 
-    @GetMapping
+    @GetMapping("/api/v1/products")
     public List<Product> getAllProducts() {
 
         System.out.println("getAll product controller method  called");
