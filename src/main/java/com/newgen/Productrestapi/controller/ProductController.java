@@ -3,9 +3,7 @@ package com.newgen.Productrestapi.controller;
 import com.newgen.Productrestapi.Model.Product;
 import com.newgen.Productrestapi.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,6 +24,17 @@ public class ProductController {
 
         return productService.getAll();
 
+    }
+    @GetMapping("/api/v1/products/{id}")
+    public Product getProductById(@PathVariable Long id) {
+        System.out.println("getProductById method called");
+        return productService.getById(id);
+    }
+    @PostMapping("/api/v1/products")
+    public String addProduct(@RequestBody Product product) {
+        productService.add(product);
+        System.out.println("addProduct method called");
+        return "product added successfully";
     }
     
 }

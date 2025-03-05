@@ -27,17 +27,17 @@ public class ProductService {
         initializeProducts();
     }
     private void initializeProducts() {
-      add(new Product(1l,"Laptop",20093.2d,Category.ELECTRONICS));
-       add(new Product(2l,"Table",203.2d,Category.FURNITURE));
-       add(new Product(3l,"tshirt",22d,Category.CLOTHING));
-       add(new Product(4l," Galaxy book",233.2d,Category.BOOKS));
+        add(new  Product("Laptop",20093.2d,Category.ELECTRONICS));
+       add(new Product("Table",203.2d,Category.FURNITURE));
+       add(new Product("tshirt",22d,Category.CLOTHING));
+       add(new Product(" Galaxy book",233.2d,Category.BOOKS));
 
 
 
     }
 
     public void add(Product product) {
-
+        product.setId(id);
         products.put(product.getId(), product);
         id++;
 
@@ -53,6 +53,7 @@ public class ProductService {
 
         return new ArrayList<>(products.values());
     }
+
 
     public boolean delete(Product product) {
 

@@ -2,7 +2,7 @@ package com.newgen.Productrestapi.Model;
 
 import lombok.*;
 
-@AllArgsConstructor
+
 @NoArgsConstructor
 @Getter
 @Setter
@@ -12,4 +12,11 @@ public class Product {
     private String name;
     private double price;
     private Category category;
+
+    public Product(String name, double price, Category category) {
+        this.name = name;
+        this.price = price;
+        this.category = category;
+
+    }
 }
