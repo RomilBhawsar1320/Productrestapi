@@ -101,8 +101,12 @@ public class ProductService {
         }
 
         public List<Product> searchByName(String name) {
-        return products.values().stream().filter(p -> p.getName().toLowerCase().
-                contains(name.toLowerCase())).collect(Collectors.toList());
+        return products.values().stream().filter(p -> isNameMatching(p, name))
+                .collect(Collectors.toList());
+        }
+
+        private boolean isNameMatching(Product product, String name) {
+            return product.getName().toLowerCase().contains(name.toLowerCase());
         }
 
         public List<Product> searchByPriceRange(Double lowerPrice, Double higherPrice) {
