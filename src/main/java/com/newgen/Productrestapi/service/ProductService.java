@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.newgen.Productrestapi.Model.Category.*;
 
@@ -100,8 +101,19 @@ public class ProductService {
             }
             }
             return matchingProducts;
+        }
 
+        public List<Product> searchByName(String name) {
+        return products.values().stream().filter(p -> p.getName().toLowerCase().
+                contains(name.toLowerCase())).collect(Collectors.toList());
+        }
 
+        public List<Product> searchByPriceRange(Double lowerPrice, Double higherPrice) {
+
+        return products.values().stream().
+                filter(p -> p.getPrice()>=lowerPrice && p.getPrice()<=higherPrice)
+                .collect(Collectors.toList());
+        
         }
     }
 

@@ -21,11 +21,21 @@ public class ProductController {
 
 
     @GetMapping("/api/v1/products")
-    public List<Product> getAllProducts(@RequestParam (required = false)String category) {
+    public List<Product> getAllProducts(@RequestParam (required = false)String category,
+                                        @RequestParam (required = false)String name,
+                                        @RequestParam (name="lower-price",required = false)Double lowerPrice,
+                                        @RequestParam (name="higher-price",required = false)Double higherPrice) {
+
         System.out.println("getAll product controller method  called");
         if(category != null){
             Category cat = Category.valueOf(category);
             return productService.searchByCategory(cat);
+        }
+        if(name != null){
+            return productService.searchByName(name);
+        }
+        if(lowerPrice != null && higherPrice != null){
+            return productService.searchByPriceRange(lowerPrice,higherPrice);
         }
         return productService.getAll();
 
