@@ -4,10 +4,7 @@ import com.newgen.Productrestapi.Model.Category;
 import com.newgen.Productrestapi.Model.Product;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.newgen.Productrestapi.Model.Category.*;
@@ -112,8 +109,9 @@ public class ProductService {
 
         return products.values().stream().
                 filter(p -> p.getPrice()>=lowerPrice && p.getPrice()<=higherPrice)
+                .sorted(Comparator.comparingDouble(Product::getPrice).reversed())
                 .collect(Collectors.toList());
-        
+
         }
     }
 
