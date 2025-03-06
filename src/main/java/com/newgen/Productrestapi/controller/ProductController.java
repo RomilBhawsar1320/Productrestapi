@@ -4,6 +4,8 @@ import com.newgen.Productrestapi.Model.Category;
 import com.newgen.Productrestapi.Model.Product;
 import com.newgen.Productrestapi.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -41,10 +43,17 @@ public class ProductController {
 
     }
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id) {
-        System.out.println("getProductById method called");
-        return productService.getById(id);
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+       Product product = productService.getById(id);
+        ResponseEntity<Product> responseEntity= null;
+       if (product != null) {
+         return new ResponseEntity<>(product, HttpStatus.OK);
+       }
+       else {
+          return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       }
     }
+
     @PostMapping
     public String addProduct(@RequestBody Product product) {
         productService.add(product);
@@ -53,13 +62,13 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteProductbyID(@PathVariable(name = "id") Long productId) {
+    public ResponseEntity<String> deleteProductbyID(@PathVariable(name = "id") Long productId) {
         System.out.println("deleteProduct method called");
         boolean status = productService.delete(productId);
         if (status) {
-            return "product deleted successfully";
+            return new ResponseEntity<>("product deleted successfully", HttpStatus.OK) ;
         } else {
-            return "product not deleted";
+            return new ResponseEntity<>("product not deleted because its not found", HttpStatus.NOT_FOUND);
         }
     }
 
