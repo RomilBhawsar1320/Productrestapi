@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @RestController
 @RequestMapping
 public class ProductController {
@@ -20,10 +21,12 @@ public class ProductController {
 
 
     @GetMapping("/api/v1/products")
-    public List<Product> getAllProducts() {
-
+    public List<Product> getAllProducts(@RequestParam (required = false)String category) {
         System.out.println("getAll product controller method  called");
-
+        if(category != null){
+            Category cat = Category.valueOf(category);
+            return productService.searchByCategory(cat);
+        }
         return productService.getAll();
 
     }
@@ -62,11 +65,11 @@ public class ProductController {
         return "product not found or not updated";
     }
 
-    @GetMapping("/api/v1/products/search/{category}")
-    public List<Product> searchByCategory(@PathVariable(name = "category") Category category) {
-        System.out.println("searchByCategory method called");
-        return productService.searchByCategory(category);
-
-    }
+////    @GetMapping("/api/v1/products/search/{category}")
+////    public List<Product> searchByCategory(@PathVariable(name = "category") Category category) {
+////        System.out.println("searchByCategory method called");
+////        return productService.searchByCategory(category);
+//
+//    }
 
 }
