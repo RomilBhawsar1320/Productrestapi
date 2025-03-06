@@ -108,10 +108,14 @@ public class ProductService {
         public List<Product> searchByPriceRange(Double lowerPrice, Double higherPrice) {
 
         return products.values().stream().
-                filter(p -> p.getPrice()>=lowerPrice && p.getPrice()<=higherPrice)
+                filter(p -> isPriceRangeValid(lowerPrice,higherPrice,p))
                 .sorted(Comparator.comparingDouble(Product::getPrice).reversed())
                 .collect(Collectors.toList());
 
+        }
+
+        private boolean isPriceRangeValid(Double lowerPrice, Double higherPrice,Product product) {
+        return product.getPrice()>=lowerPrice && product.getPrice()<=higherPrice;
         }
     }
 

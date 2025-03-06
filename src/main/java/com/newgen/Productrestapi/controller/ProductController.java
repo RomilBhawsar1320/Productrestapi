@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping
+@RequestMapping("/api/v1/products")
 public class ProductController {
     private ProductService productService;
     @Autowired
@@ -20,7 +20,7 @@ public class ProductController {
     }
 
 
-    @GetMapping("/api/v1/products")
+    @GetMapping
     public List<Product> getAllProducts(@RequestParam (required = false)String category,
                                         @RequestParam (required = false)String name,
                                         @RequestParam (name="lower-price",required = false)Double lowerPrice,
@@ -40,19 +40,19 @@ public class ProductController {
         return productService.getAll();
 
     }
-    @GetMapping("/api/v1/products/{id}")
+    @GetMapping("/{id}")
     public Product getProductById(@PathVariable Long id) {
         System.out.println("getProductById method called");
         return productService.getById(id);
     }
-    @PostMapping("/api/v1/products")
+    @PostMapping
     public String addProduct(@RequestBody Product product) {
         productService.add(product);
         System.out.println("addProduct method called");
         return "product added successfully";
     }
 
-    @DeleteMapping("/api/v1/products/{id}")
+    @DeleteMapping("/{id}")
     public String deleteProductbyID(@PathVariable(name = "id") Long productId) {
         System.out.println("deleteProduct method called");
         boolean status = productService.delete(productId);
@@ -63,7 +63,7 @@ public class ProductController {
         }
     }
 
-    @PutMapping("/api/v1/products/{id}")
+    @PutMapping("/{id}")
     public String updateProduct(@RequestBody Product product, @PathVariable Long id) {
         System.out.println("updateProduct method called");
         product.setId(id);
