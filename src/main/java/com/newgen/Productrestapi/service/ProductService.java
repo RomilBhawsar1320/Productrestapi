@@ -3,6 +3,7 @@ package com.newgen.Productrestapi.service;
 import com.newgen.Productrestapi.Model.Category;
 import com.newgen.Productrestapi.Model.Product;
 import com.newgen.Productrestapi.exception.InvalidProductCategoryException;
+import com.newgen.Productrestapi.exception.ProductNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -69,9 +70,12 @@ public class ProductService {
 
     }
 
-    public Product getById(Long id) {
-
-        return products.get(id);
+    public Product getById(Long id) throws ProductNotFoundException {
+        Product prod = products.get(id);
+        if (prod == null) {
+            throw new ProductNotFoundException("product not found");
+        }
+        return prod;
     }
     public List<Product> getAll() {
 
@@ -81,23 +85,28 @@ public class ProductService {
     }
 
 
-    public boolean delete(Long id) {
-
-        return products.remove(id) != null;
+    public void delete(Long id) throws ProductNotFoundException {
+        Product prod = products.remove(id);
+        if (prod == null) {
+            throw new ProductNotFoundException("product not found");
+        }
     }
 
-    public boolean updateProduct(Product newProduct) {
+    public void updateProduct(Product newProduct)throws ProductNotFoundException {
 
         Product oldProduct = products.get(newProduct.getId());
+
+        if (oldProduct == null) {
+            throw new ProductNotFoundException("product not found ");
+        }
 
         if(oldProduct!= null) {
             oldProduct.setName(newProduct.getName());
             oldProduct.setPrice(newProduct.getPrice());
             oldProduct.setCategory(newProduct.getCategory());
-            return true;
 
         }
-        return false;
+
     }
 
     public List<Product> searchByCategory(Category category) {
