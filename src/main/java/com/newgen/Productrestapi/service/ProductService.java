@@ -15,9 +15,9 @@ import static com.newgen.Productrestapi.Model.Category.*;
 public class ProductService {
 
     private final Map<Long, Product> products;
-
-
     private Long id;
+
+    final String INVALID_PRODUCT_IDENTIFIER_ERROR_MESSAGE = "Invalid product identifier is provided Product not found";
 
     public ProductService() {
 
@@ -73,7 +73,7 @@ public class ProductService {
     public Product getById(Long id) throws ProductNotFoundException {
         Product prod = products.get(id);
         if (prod == null) {
-            throw new ProductNotFoundException("product not found");
+            throw new ProductNotFoundException(INVALID_PRODUCT_IDENTIFIER_ERROR_MESSAGE);
         }
         return prod;
     }
@@ -88,7 +88,7 @@ public class ProductService {
     public void delete(Long id) throws ProductNotFoundException {
         Product prod = products.remove(id);
         if (prod == null) {
-            throw new ProductNotFoundException("product not found");
+            throw new ProductNotFoundException(INVALID_PRODUCT_IDENTIFIER_ERROR_MESSAGE);
         }
     }
 
@@ -97,7 +97,7 @@ public class ProductService {
         Product oldProduct = products.get(newProduct.getId());
 
         if (oldProduct == null) {
-            throw new ProductNotFoundException("product not found ");
+            throw new ProductNotFoundException(INVALID_PRODUCT_IDENTIFIER_ERROR_MESSAGE);
         }
 
         if(oldProduct!= null) {
