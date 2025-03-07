@@ -2,6 +2,7 @@ package com.newgen.Productrestapi.controller;
 
 import com.newgen.Productrestapi.Model.Category;
 import com.newgen.Productrestapi.Model.Product;
+import com.newgen.Productrestapi.exception.InvalidProductCategoryException;
 import com.newgen.Productrestapi.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,10 +56,19 @@ public class ProductController {
     }
 
     @PostMapping
-    public String addProduct(@RequestBody Product product) {
-        productService.add(product);
+    public ResponseEntity<String> addProduct(@RequestBody Product product) {
+
         System.out.println("addProduct method called");
-        return "product added successfully";
+       try{
+           productService.add(product);
+       }
+       catch(InvalidProductCategoryException e) {
+
+           e.printStackTrace();
+
+           return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+       }
+       return new ResponseEntity<>("Product added Succesfully ",HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
@@ -73,15 +83,15 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public String updateProduct(@RequestBody Product product, @PathVariable Long id) {
+    public ResponseEntity<String> updateProduct(@RequestBody Product product, @PathVariable Long id) {
         System.out.println("updateProduct method called");
         product.setId(id);
         boolean status = productService.updateProduct(product);
 
         if (status) {
-            return "product updated successfully";
+            return new ResponseEntity<>("product updated successfully", HttpStatus.OK) ;
         }
-        return "product not found or not updated";
+        return new ResponseEntity<>("product not updated because its not found", HttpStatus.NOT_FOUND);
     }
 
 ////    @GetMapping("/api/v1/products/search/{category}")

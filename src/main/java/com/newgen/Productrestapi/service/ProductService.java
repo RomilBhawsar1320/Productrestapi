@@ -2,6 +2,7 @@ package com.newgen.Productrestapi.service;
 
 import com.newgen.Productrestapi.Model.Category;
 import com.newgen.Productrestapi.Model.Product;
+import com.newgen.Productrestapi.exception.InvalidProductCategoryException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -25,37 +26,46 @@ public class ProductService {
         initializeProducts();
     }
     private void initializeProducts() {
-        add(new  Product("Laptop",20093.2d,Category.ELECTRONICS));
-        add(new Product("Table",203.2d,Category.FURNITURE));
-        add(new Product("tshirt",22d,Category.CLOTHING));
-        add(new Product(" Galaxy book",233.2d,Category.BOOKS));
-        add(new Product("Smartphone", 999.99d, Category.ELECTRONICS));
-        add(new Product("Headphones", 149.99d, Category.ELECTRONICS));
-        add(new Product("Refrigerator", 1200.50d, Category.ELECTRONICS));
-        add(new Product("Smartwatch", 299.99d, Category.ELECTRONICS));
-        add(new Product("Sofa", 899.99d, Category.FURNITURE));
-        add(new Product("Dining Table", 599.99d, Category.FURNITURE));
-        add(new Product("Chair", 79.99d, Category.FURNITURE));
-        add(new Product("Wardrobe", 699.99d, Category.FURNITURE));
-        add(new Product("Jeans", 39.99d, Category.CLOTHING));
-        add(new Product("Jacket", 89.99d, Category.CLOTHING));
-        add(new Product("Shoes", 59.99d, Category.CLOTHING));
-        add(new Product("Sweater", 49.99d, Category.CLOTHING));
-        add(new Product("Science Fiction Novel", 19.99d, Category.BOOKS));
-        add(new Product("Self-Help Book", 14.99d, Category.BOOKS));
-        add(new Product("Cookbook", 24.99d, Category.BOOKS));
-        add(new Product("Biography", 29.99d, Category.BOOKS));
-        add(new Product("Microwave Oven", 249.99d, Category.ELECTRONICS));
-        add(new Product("Gaming Console", 499.99d, Category.ELECTRONICS));
-        add(new Product("Backpack", 34.99d, Category.CLOTHING));
-        add(new Product("Coffee Table", 149.99d, Category.FURNITURE));
-
+        try {
+            add(new Product("Laptop", 20093.2d, Category.ELECTRONICS));
+            add(new Product("Table", 203.2d, Category.FURNITURE));
+            add(new Product("tshirt", 22d, Category.CLOTHING));
+            add(new Product(" Galaxy book", 233.2d, Category.BOOKS));
+            add(new Product("Smartphone", 999.99d, Category.ELECTRONICS));
+            add(new Product("Headphones", 149.99d, Category.ELECTRONICS));
+            add(new Product("Refrigerator", 1200.50d, Category.ELECTRONICS));
+            add(new Product("Smartwatch", 299.99d, Category.ELECTRONICS));
+            add(new Product("Sofa", 899.99d, Category.FURNITURE));
+            add(new Product("Dining Table", 599.99d, Category.FURNITURE));
+            add(new Product("Chair", 79.99d, Category.FURNITURE));
+            add(new Product("Wardrobe", 699.99d, Category.FURNITURE));
+            add(new Product("Jeans", 39.99d, Category.CLOTHING));
+            add(new Product("Jacket", 89.99d, Category.CLOTHING));
+            add(new Product("Shoes", 59.99d, Category.CLOTHING));
+            add(new Product("Sweater", 49.99d, Category.CLOTHING));
+            add(new Product("Science Fiction Novel", 19.99d, Category.BOOKS));
+            add(new Product("Self-Help Book", 14.99d, Category.BOOKS));
+            add(new Product("Cookbook", 24.99d, Category.BOOKS));
+            add(new Product("Biography", 29.99d, Category.BOOKS));
+            add(new Product("Microwave Oven", 249.99d, Category.ELECTRONICS));
+            add(new Product("Gaming Console", 499.99d, Category.ELECTRONICS));
+            add(new Product("Backpack", 34.99d, Category.CLOTHING));
+            add(new Product("Coffee Table", 149.99d, Category.FURNITURE));
+        }
+        catch (InvalidProductCategoryException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
-    public void add(Product product) {
-        product.setId(id);
-        products.put(product.getId(), product);
-        id++;
+    public void add(Product product) throws InvalidProductCategoryException {
+
+            if(product.getCategory() == null){
+                throw new InvalidProductCategoryException("invalid product category");
+            }
+
+            product.setId(id);
+            products.put(product.getId(), product);
+            id++;
 
     }
 
