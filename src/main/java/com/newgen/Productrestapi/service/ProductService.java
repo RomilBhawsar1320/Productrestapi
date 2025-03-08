@@ -2,6 +2,7 @@ package com.newgen.Productrestapi.service;
 
 import com.newgen.Productrestapi.Model.Category;
 import com.newgen.Productrestapi.Model.Product;
+import com.newgen.Productrestapi.exception.InvalidArgumentException;
 import com.newgen.Productrestapi.exception.InvalidProductCategoryException;
 import com.newgen.Productrestapi.exception.ProductNotFoundException;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class ProductService {
 
         initializeProducts();
     }
+
     private void initializeProducts() {
         try {
             add(new Product("Laptop", 20093.2d, Category.ELECTRONICS));
@@ -52,31 +54,31 @@ public class ProductService {
             add(new Product("Gaming Console", 499.99d, Category.ELECTRONICS));
             add(new Product("Backpack", 34.99d, Category.CLOTHING));
             add(new Product("Coffee Table", 149.99d, Category.FURNITURE));
-        }
-        catch (InvalidProductCategoryException e) {
+        } catch (InvalidProductCategoryException e) {
             System.err.println(e.getMessage());
         }
     }
 
-    public void add(Product product) throws InvalidProductCategoryException {
+    public void add(Product product) {
 
-            if(product.getCategory() == null){
-                throw new InvalidProductCategoryException("invalid product category");
-            }
+        if (product.getCategory() == null) {
+            throw new InvalidProductCategoryException("invalid product category");
+        }
 
-            product.setId(id);
-            products.put(product.getId(), product);
-            id++;
+        product.setId(id);
+        products.put(product.getId(), product);
+        id++;
 
     }
 
-    public Product getById(Long id) throws ProductNotFoundException {
+    public Product getById(Long id) {
         Product prod = products.get(id);
         if (prod == null) {
             throw new ProductNotFoundException(INVALID_PRODUCT_IDENTIFIER_ERROR_MESSAGE);
         }
         return prod;
     }
+
     public List<Product> getAll() {
 
         System.out.println("getAll productService called");
@@ -85,14 +87,14 @@ public class ProductService {
     }
 
 
-    public void delete(Long id) throws ProductNotFoundException {
+    public void delete(Long id) {
         Product prod = products.remove(id);
         if (prod == null) {
             throw new ProductNotFoundException(INVALID_PRODUCT_IDENTIFIER_ERROR_MESSAGE);
         }
     }
 
-    public void updateProduct(Product newProduct)throws ProductNotFoundException {
+    public void updateProduct(Product newProduct) throws ProductNotFoundException {
 
         Product oldProduct = products.get(newProduct.getId());
 
@@ -100,7 +102,7 @@ public class ProductService {
             throw new ProductNotFoundException(INVALID_PRODUCT_IDENTIFIER_ERROR_MESSAGE);
         }
 
-        if(oldProduct!= null) {
+        if (oldProduct != null) {
             oldProduct.setName(newProduct.getName());
             oldProduct.setPrice(newProduct.getPrice());
             oldProduct.setCategory(newProduct.getCategory());
@@ -115,32 +117,35 @@ public class ProductService {
             if (product.getCategory().equals(category)) {
                 matchingProducts.add(product);
             }
-            }
-            return matchingProducts;
         }
+        return matchingProducts;
+    }
 
-        public List<Product> searchByName(String name) {
+    public List<Product> searchByName(String name) {
+        if (name.isEmpty()) {
+            throw new InvalidArgumentException("Product cannot be empty");
+        }
         return products.values().stream().filter(p -> isNameMatching(p, name))
                 .collect(Collectors.toList());
-        }
+    }
 
-        private boolean isNameMatching(Product product, String name) {
-            return product.getName().toLowerCase().contains(name.toLowerCase());
-        }
+    private boolean isNameMatching(Product product, String name) {
+        return product.getName().toLowerCase().contains(name.toLowerCase());
+    }
 
-        public List<Product> searchByPriceRange(Double lowerPrice, Double higherPrice) {
+    public List<Product> searchByPriceRange(Double lowerPrice, Double higherPrice) {
 
         return products.values().stream().
-                filter(p -> isPriceRangeValid(lowerPrice,higherPrice,p))
+                filter(p -> isPriceRangeValid(lowerPrice, higherPrice, p))
                 .sorted(Comparator.comparingDouble(Product::getPrice).reversed())
                 .collect(Collectors.toList());
 
-        }
-
-        private boolean isPriceRangeValid(Double lowerPrice, Double higherPrice,Product product) {
-        return product.getPrice()>=lowerPrice && product.getPrice()<=higherPrice;
-        }
     }
+
+    private boolean isPriceRangeValid(Double lowerPrice, Double higherPrice, Product product) {
+        return product.getPrice() >= lowerPrice && product.getPrice() <= higherPrice;
+    }
+}
 
 
 

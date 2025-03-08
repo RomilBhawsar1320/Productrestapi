@@ -49,15 +49,9 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductById(@PathVariable Long id) {
 
-        try{
-            Product product = productService.getById(id);
-            return new ResponseEntity<>(product, HttpStatus.OK);
-        } catch (ProductNotFoundException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
-        }
-
-        }
+        Product product = productService.getById(id);
+        return new ResponseEntity<>(product, HttpStatus.OK);
+    }
 
     @PostMapping
     public ResponseEntity<String> addProduct(@RequestBody Product product) {
@@ -77,14 +71,9 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProductbyID(@PathVariable(name = "id") Long productId) {
         System.out.println("deleteProduct method called");
-        try{
-            productService.delete(productId);
-            return new ResponseEntity<>("product deleted successfully", HttpStatus.OK);
+        productService.delete(productId);
+        return new ResponseEntity<>("product deleted successfully", HttpStatus.OK);
 
-        }
-        catch (ProductNotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
 
     }
 
@@ -92,13 +81,9 @@ public class ProductController {
     public ResponseEntity<String> updateProduct(@RequestBody Product product, @PathVariable Long id) {
         System.out.println("updateProduct method called");
         product.setId(id);
-        try {
-            productService.updateProduct(product);
-            return new ResponseEntity<>("product updated successfully", HttpStatus.OK);
-        } catch (ProductNotFoundException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("product not updated because its not found", HttpStatus.NOT_FOUND);
-        }
+
+        productService.updateProduct(product);
+        return new ResponseEntity<>("product updated successfully", HttpStatus.OK);
 
     }
 
