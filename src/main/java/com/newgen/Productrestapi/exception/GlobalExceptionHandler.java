@@ -10,14 +10,31 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<String> handleProductNotFoundException(ProductNotFoundException e) {
+    public ResponseEntity<ErrorDetails> handleProductNotFoundException(ProductNotFoundException e) {
         System.err.println(e);
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        ErrorDetails errorDetail = new ErrorDetails(HttpStatus.NOT_FOUND.value(),e.getMessage(),"Product Not Found");
+        return new ResponseEntity<>(errorDetail, HttpStatus.NOT_FOUND);
     }
 
-//    @ExceptionHandler(InvalidProductCategoryException.class)
-//    public ResponseEntity<String> handleInvalidProductCategoryException(InvalidProductCategoryException e) {
-//        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-//    }
+    @ExceptionHandler(InvalidProductCategoryException.class)
+    public ResponseEntity<ErrorDetails> handleInvalidProductCategoryException(InvalidProductCategoryException e) {
+        System.err.println(e);
+        ErrorDetails errorDetail = new ErrorDetails(HttpStatus.BAD_REQUEST.value(),e.getMessage(),"WRONG INPUT");
+        return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidArgumentException.class)
+    public ResponseEntity<ErrorDetails> handleInvalidArgumentException(InvalidArgumentException e) {
+        System.err.println(e);
+        ErrorDetails errorDetail = new ErrorDetails(HttpStatus.BAD_REQUEST.value(),e.getMessage(),"WRONG INPUT");
+        return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorDetails> handleGenericException(Exception e) {
+        System.err.println(e);
+        ErrorDetails errorDetail = new ErrorDetails(HttpStatus.INTERNAL_SERVER_ERROR.value(),e.getMessage(),"INTERNAL SERVER ERROR");
+        return new ResponseEntity<>(errorDetail, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 }

@@ -19,7 +19,8 @@ public class ProductService {
     private Long id;
 
     final String INVALID_PRODUCT_IDENTIFIER_ERROR_MESSAGE = "Invalid product identifier is provided Product not found";
-
+    final String INVALID_CATEGORY_ERROR_MESSAGE = "Invalid category is provided Product not found";
+    final String INVALID_PRODUCT_NAME_ERROR_MESSAGE = "Invalid product name is provided Product not found";
     public ProductService() {
 
         this.products = new HashMap<>();
@@ -62,7 +63,7 @@ public class ProductService {
     public void add(Product product) {
 
         if (product.getCategory() == null) {
-            throw new InvalidProductCategoryException("invalid product category");
+            throw new InvalidProductCategoryException(INVALID_CATEGORY_ERROR_MESSAGE);
         }
 
         product.setId(id);
@@ -102,6 +103,10 @@ public class ProductService {
             throw new ProductNotFoundException(INVALID_PRODUCT_IDENTIFIER_ERROR_MESSAGE);
         }
 
+        if(oldProduct.getCategory() == null) {
+            throw new InvalidProductCategoryException(INVALID_CATEGORY_ERROR_MESSAGE);
+        }
+
         if (oldProduct != null) {
             oldProduct.setName(newProduct.getName());
             oldProduct.setPrice(newProduct.getPrice());
@@ -123,7 +128,7 @@ public class ProductService {
 
     public List<Product> searchByName(String name) {
         if (name.isEmpty()) {
-            throw new InvalidArgumentException("Product cannot be empty");
+            throw new InvalidArgumentException(INVALID_PRODUCT_NAME_ERROR_MESSAGE);
         }
         return products.values().stream().filter(p -> isNameMatching(p, name))
                 .collect(Collectors.toList());
