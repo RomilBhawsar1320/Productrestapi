@@ -1,0 +1,11 @@
+/Users/priyanshishrivastava/Documents/Productrestapi/src/main/java/com/newgen/Productrestapi/Model/Category.java
+/Users/priyanshishrivastava/Documents/Productrestapi/src/main/java/com/newgen/Productrestapi/Model/Product.java
+/Users/priyanshishrivastava/Documents/Productrestapi/src/main/java/com/newgen/Productrestapi/Model/ProductSearchCriteria.java
+/Users/priyanshishrivastava/Documents/Productrestapi/src/main/java/com/newgen/Productrestapi/ProductrestapiApplication.java
+/Users/priyanshishrivastava/Documents/Productrestapi/src/main/java/com/newgen/Productrestapi/controller/ProductController.java
+/Users/priyanshishrivastava/Documents/Productrestapi/src/main/java/com/newgen/Productrestapi/exception/ErrorDetails.java
+/Users/priyanshishrivastava/Documents/Productrestapi/src/main/java/com/newgen/Productrestapi/exception/GlobalExceptionHandler.java
+/Users/priyanshishrivastava/Documents/Productrestapi/src/main/java/com/newgen/Productrestapi/exception/InvalidArgumentException.java
+/Users/priyanshishrivastava/Documents/Productrestapi/src/main/java/com/newgen/Productrestapi/exception/InvalidProductCategoryException.java
+/Users/priyanshishrivastava/Documents/Productrestapi/src/main/java/com/newgen/Productrestapi/exception/ProductNotFoundException.java
+/Users/priyanshishrivastava/Documents/Productrestapi/src/main/java/com/newgen/Productrestapi/service/ProductService.java

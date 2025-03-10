@@ -1,5 +1,6 @@
 package com.newgen.Productrestapi.Model;
 
+import jakarta.persistence.*;
 import lombok.*;
 
 
@@ -7,7 +8,12 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
+@Entity
+@Table(name = "products")
 public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
     private double price;

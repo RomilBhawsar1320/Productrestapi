@@ -38,7 +38,7 @@ public class ProductController {
             return productService.searchByPriceRange(productSearchCriteria.getLowerPrice(), productSearchCriteria.getHigherPrice());
         }
         return productService.getAll();
-        
+
     }
 
 
