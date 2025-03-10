@@ -2,6 +2,7 @@ package com.newgen.Productrestapi.controller;
 
 import com.newgen.Productrestapi.Model.Category;
 import com.newgen.Productrestapi.Model.Product;
+import com.newgen.Productrestapi.Model.ProductSearchCriteria;
 import com.newgen.Productrestapi.exception.InvalidProductCategoryException;
 import com.newgen.Productrestapi.exception.ProductNotFoundException;
 import com.newgen.Productrestapi.service.ProductService;
@@ -22,6 +23,22 @@ public class ProductController {
     @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
+    }
+
+    @PostMapping
+    public List<Product> getAllProducts(@RequestBody ProductSearchCriteria productSearchCriteria) {
+        if (productSearchCriteria.getCategory() != null) {
+            Category cat = Category.valueOf(productSearchCriteria.getCategory().toString());
+            return productService.searchByCategory(cat);
+        }
+        if (productSearchCriteria.getName() != null) {
+            return productService.searchByName(productSearchCriteria.getName());
+        }
+        if (productSearchCriteria.getLowerPrice() != null && productSearchCriteria.getHigherPrice() != null) {
+            return productService.searchByPriceRange(productSearchCriteria.getLowerPrice(), productSearchCriteria.getHigherPrice());
+        }
+        return productService.getAll();
+        
     }
 
 
@@ -53,7 +70,7 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/addProduct")
     public ResponseEntity<String> addProduct(@RequestBody Product product) {
 
         System.out.println("addProduct method called");
