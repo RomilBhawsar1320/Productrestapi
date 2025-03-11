@@ -51,6 +51,14 @@ public class DatabaseProductService implements IProductService {
     @Override
     public void delete(Long id) {
 
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isPresent()) {
+            productRepository.delete(product.get());
+        }
+        else {
+            throw new ProductNotFoundException("INVALID_PRODUCT_IDENTIFIER_ERROR_MESSAGE");
+        }
+
     }
 
     @Override
@@ -65,6 +73,8 @@ public class DatabaseProductService implements IProductService {
 
     @Override
     public void updateProduct(Product newProduct) {
+
+        productRepository.save(newProduct);
 
     }
 
