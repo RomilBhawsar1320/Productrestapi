@@ -68,7 +68,7 @@ public class DatabaseProductService implements IProductService {
 
     @Override
     public List<Product> searchByProductName(String name) {
-        return productRepository.findByName(name);
+        return productRepository.findByNameContainingIgnoreCase(name);
     }
 
     @Override
@@ -80,6 +80,6 @@ public class DatabaseProductService implements IProductService {
 
     @Override
     public List<Product> searchByPriceRange(Double lowerPrice, Double higherPrice) {
-        return List.of();
+        return productRepository.findByPriceBetween(lowerPrice, higherPrice);
     }
 }
