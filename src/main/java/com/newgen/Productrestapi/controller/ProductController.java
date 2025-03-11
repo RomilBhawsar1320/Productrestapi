@@ -72,7 +72,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<String> addProduct(@RequestBody Product product) {
+    public ResponseEntity<String> add(@RequestBody Product product) {
 
         System.out.println("addProduct method called");
         try {
