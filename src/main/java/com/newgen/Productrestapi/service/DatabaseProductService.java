@@ -63,12 +63,12 @@ public class DatabaseProductService implements IProductService {
 
     @Override
     public List<Product> searchByCategory(Category category) {
-        return List.of();
+        return productRepository.findByCategory(category);
     }
 
     @Override
     public List<Product> searchByProductName(String name) {
-        return List.of();
+        return productRepository.findByName(name);
     }
 
     @Override
