@@ -14,7 +14,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String name;
     private double price;
     private Category category;

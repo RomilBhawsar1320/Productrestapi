@@ -4,42 +4,43 @@ import com.newgen.Productrestapi.Model.Category;
 import com.newgen.Productrestapi.Model.Product;
 import com.newgen.Productrestapi.Model.ProductSearchCriteria;
 import com.newgen.Productrestapi.exception.InvalidProductCategoryException;
-import com.newgen.Productrestapi.exception.ProductNotFoundException;
-import com.newgen.Productrestapi.service.ProductService;
+import com.newgen.Productrestapi.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 @RestController
 @RequestMapping("/api/v1/products")
 public class ProductController {
-    private ProductService productService;
+    private IProductService productService;
 
     @Autowired
-    public ProductController(ProductService productService) {
+
+    public ProductController(IProductService productService) {
+
+        System.out.println("ProductController called "+productService);
         this.productService = productService;
     }
 
-    @PostMapping
-    public List<Product> getAllProducts(@RequestBody ProductSearchCriteria productSearchCriteria) {
-        if (productSearchCriteria.getCategory() != null) {
-            Category cat = Category.valueOf(productSearchCriteria.getCategory().toString());
-            return productService.searchByCategory(cat);
-        }
-        if (productSearchCriteria.getName() != null) {
-            return productService.searchByName(productSearchCriteria.getName());
-        }
-        if (productSearchCriteria.getLowerPrice() != null && productSearchCriteria.getHigherPrice() != null) {
-            return productService.searchByPriceRange(productSearchCriteria.getLowerPrice(), productSearchCriteria.getHigherPrice());
-        }
-        return productService.getAll();
-
-    }
+//    @PostMapping
+//    public List<Product> getAllProducts(@RequestBody ProductSearchCriteria productSearchCriteria) {
+//        if (productSearchCriteria.getCategory() != null) {
+//            Category cat = Category.valueOf(productSearchCriteria.getCategory().toString());
+//            return productService.searchByCategory(cat);
+//        }
+//        if (productSearchCriteria.getName() != null) {
+//            return productService.searchByProductName(productSearchCriteria.getName());
+//        }
+//        if (productSearchCriteria.getLowerPrice() != null && productSearchCriteria.getHigherPrice() != null) {
+//            return productService.searchByPriceRange(productSearchCriteria.getLowerPrice(), productSearchCriteria.getHigherPrice());
+//        }
+//        return productService.getAll();
+//
+//    }
 
 
     @GetMapping
@@ -54,7 +55,7 @@ public class ProductController {
             return productService.searchByCategory(cat);
         }
         if (name != null) {
-            return productService.searchByName(name);
+            return productService.searchByProductName(name);
         }
         if (lowerPrice != null && higherPrice != null) {
             return productService.searchByPriceRange(lowerPrice, higherPrice);
@@ -70,12 +71,12 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @PostMapping("/addProduct")
+    @PostMapping
     public ResponseEntity<String> addProduct(@RequestBody Product product) {
 
         System.out.println("addProduct method called");
         try {
-            productService.add(product);
+            productService.addProduct(product);
         } catch (InvalidProductCategoryException e) {
 
             e.printStackTrace();
