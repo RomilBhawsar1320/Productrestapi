@@ -24,7 +24,7 @@ public class SampleController {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
 
-            List<Post> posts = objectMapper.readValue(response,new TypeReference<List<Post>>(){});
+            List<Post> posts = objectMapper.readValue(response,new TypeReference<>(){});
             return posts.stream().filter(p ->p.getTitle().contains("explicabo")).collect(Collectors.toList());
 
         }
