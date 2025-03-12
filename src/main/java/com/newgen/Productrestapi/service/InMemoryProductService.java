@@ -6,6 +6,7 @@ import com.newgen.Productrestapi.exception.InvalidArgumentException;
 import com.newgen.Productrestapi.exception.InvalidProductCategoryException;
 import com.newgen.Productrestapi.exception.ProductNotFoundException;
 import com.newgen.Productrestapi.utils.Constant;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
