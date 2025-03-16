@@ -1,10 +1,12 @@
 package com.newgen.Productrestapi.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 public class ReviewDetails {
     private int totalOneStarRating;
     private int totalTwoStarRating;

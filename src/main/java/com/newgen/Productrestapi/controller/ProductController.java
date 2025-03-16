@@ -3,12 +3,16 @@ package com.newgen.Productrestapi.controller;
 import com.newgen.Productrestapi.Model.Category;
 import com.newgen.Productrestapi.Model.Product;
 import com.newgen.Productrestapi.Model.ProductSearchCriteria;
+import com.newgen.Productrestapi.dto.ProductDto;
+import com.newgen.Productrestapi.dto.ProductReviewDto;
+import com.newgen.Productrestapi.dto.ReviewDetails;
 import com.newgen.Productrestapi.exception.InvalidProductCategoryException;
 import com.newgen.Productrestapi.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -17,13 +21,14 @@ import java.util.List;
 @RequestMapping("/api/v1/products")
 public class ProductController {
     private IProductService productService;
+    private RestTemplate restTemplate;
 
     @Autowired
-
-    public ProductController(IProductService productService) {
+    public ProductController(IProductService productService, RestTemplate restTemplate) {
 
         System.out.println("ProductController called "+productService);
         this.productService = productService;
+        this.restTemplate = restTemplate;
     }
 
 //    @PostMapping
@@ -103,6 +108,28 @@ public class ProductController {
         productService.updateProduct(product);
         return new ResponseEntity<>("product updated successfully", HttpStatus.OK);
 
+    }
+
+    @GetMapping("/{id}/reviews")
+    public ResponseEntity<ProductReviewDto> getProductsWithReviews(@PathVariable(name = "id") Long productId) {
+
+        Product product = productService.getById(productId);
+
+        ProductDto productDetails = mapToDto(product);
+
+        ResponseEntity<ReviewDetails> reviewDetailsResponseEntity = restTemplate.getForEntity("http://localhost:8081/api/v1/products/{productId}/reviews", ReviewDetails.class, productId);
+
+        ReviewDetails reviewDetails = reviewDetailsResponseEntity.getBody();
+
+        ProductReviewDto productReviewDto = new ProductReviewDto(productDetails, reviewDetails);
+
+        return new ResponseEntity<>(productReviewDto, HttpStatus.OK);
+
+
+    }
+
+    private ProductDto mapToDto(Product product) {
+        return new ProductDto(product.getId(), product.getName(), product.getPrice(), product.getCategory());
     }
 
 ////    @GetMapping("/api/v1/products/search/{category}")
